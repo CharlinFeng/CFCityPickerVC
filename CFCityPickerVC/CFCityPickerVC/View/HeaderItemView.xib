@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="HeaderItemView" customModule="CFCityPickerVC" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="411" height="341"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jdk-Bw-IT2" userLabel="ItemLabel">
+                    <rect key="frame" x="18" y="8" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XmA-56-bQL" userLabel="LineView">
+                    <rect key="frame" x="66" y="18" width="345" height="1"/>
+                    <color key="backgroundColor" red="0.62352941176470589" green="0.62352941176470589" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="xJ2-ST-Jce"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mON-gL-PBa" userLabel="ContentView" customClass="CFCPContentView" customModule="CFCityPickerVC" customModuleProvider="target">
+                    <rect key="frame" x="18" y="44" width="363" height="282"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无数据" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tkY-rJ-Y5W">
+                    <rect key="frame" x="20" y="40" width="60" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Jdk-Bw-IT2" firstAttribute="leading" secondItem="tkY-rJ-Y5W" secondAttribute="leading" constant="-2" id="CvN-tR-jmR"/>
+                <constraint firstItem="Jdk-Bw-IT2" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="EHh-vV-Psy"/>
+                <constraint firstAttribute="trailing" secondItem="mON-gL-PBa" secondAttribute="trailing" constant="30" id="JaX-rz-W03"/>
+                <constraint firstItem="Jdk-Bw-IT2" firstAttribute="leading" secondItem="mON-gL-PBa" secondAttribute="leading" id="LFS-1E-JBJ"/>
+                <constraint firstAttribute="trailing" secondItem="XmA-56-bQL" secondAttribute="trailing" id="NGr-T6-weE"/>
+                <constraint firstItem="mON-gL-PBa" firstAttribute="top" secondItem="Jdk-Bw-IT2" secondAttribute="bottom" constant="15" id="bLf-7o-rxW"/>
+                <constraint firstItem="Jdk-Bw-IT2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="18" id="eJ2-az-aGJ"/>
+                <constraint firstItem="XmA-56-bQL" firstAttribute="leading" secondItem="Jdk-Bw-IT2" secondAttribute="trailing" constant="6" id="ksf-WZ-uTj"/>
+                <constraint firstItem="XmA-56-bQL" firstAttribute="centerY" secondItem="Jdk-Bw-IT2" secondAttribute="centerY" id="nbI-jC-wuJ"/>
+                <constraint firstAttribute="bottom" secondItem="mON-gL-PBa" secondAttribute="bottom" constant="15" id="qc8-Nn-IEL"/>
+                <constraint firstItem="tkY-rJ-Y5W" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="yuR-TR-pC5"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="contentView" destination="mON-gL-PBa" id="KC1-9C-k6Q"/>
+                <outlet property="itemLabel" destination="Jdk-Bw-IT2" id="fnB-7k-3aq"/>
+                <outlet property="lineView" destination="XmA-56-bQL" id="bYZ-8y-YC9"/>
+                <outlet property="lineViewHC" destination="xJ2-ST-Jce" id="S7M-Jy-8PM"/>
+                <outlet property="msgLabel" destination="tkY-rJ-Y5W" id="wDe-WX-xPp"/>
+            </connections>
+            <point key="canvasLocation" x="56.5" y="258.5"/>
+        </view>
+    </objects>
+</document>
