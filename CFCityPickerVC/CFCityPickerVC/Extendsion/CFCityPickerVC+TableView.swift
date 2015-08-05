@@ -9,16 +9,23 @@
 import Foundation
 import UIKit
 
-extension CFCityPickerVC{
+extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     
-    var currentCityModel: CityModel? {if self.currentCity==nil{return nil};return CityModel.findCityModelWithCityName([self.currentCity], cityModels: self.cityModels)?.first}
-    var hotCityModels: [CityModel]? {if self.hotCities==nil{return nil};return CityModel.findCityModelWithCityName(self.hotCities, cityModels: self.cityModels)}
-    var historyModels: [CityModel]? {if self.selectedCityArray.count == 0 {return nil};return CityModel.findCityModelWithCityName(self.selectedCityArray, cityModels: self.cityModels)}
+    private var currentCityModel: CityModel? {if self.currentCity==nil{return nil};return CityModel.findCityModelWithCityName([self.currentCity], cityModels: self.cityModels)?.first}
+    private var hotCityModels: [CityModel]? {if self.hotCities==nil{return nil};return CityModel.findCityModelWithCityName(self.hotCities, cityModels: self.cityModels)}
+    private var historyModels: [CityModel]? {if self.selectedCityArray.count == 0 {return nil};return CityModel.findCityModelWithCityName(self.selectedCityArray, cityModels: self.cityModels)}
     
-    var headViewWith: CGFloat{return UIScreen.mainScreen().bounds.width - 10}
+    private var headViewWith: CGFloat{return UIScreen.mainScreen().bounds.width - 10}
     
+    private var headerViewH: CGFloat{
+        
+        var h1: CGFloat = 90
+        var h2: CGFloat = 100; if self.historyModels?.count > 4{h2+=40}
+        var h3: CGFloat = 100; if self.hotCities?.count > 4 {h3+=40}
+        return h1+h2+h3
+    }
     
-    var sortedCityModles: [CityModel] {
+    private var sortedCityModles: [CityModel] {
     
         return cityModels.sorted({ (m1, m2) -> Bool in
             m1.getFirstUpperLetter < m2.getFirstUpperLetter
@@ -27,7 +34,7 @@ extension CFCityPickerVC{
     
     
     /** 计算高度 */
-    func headItemViewH(count: Int) -> CGRect{
+    private func headItemViewH(count: Int) -> CGRect{
         var height: CGFloat = count < 4 ? 90 : 140
         return CGRectMake(0, 0, headViewWith, height)
     }
@@ -38,21 +45,23 @@ extension CFCityPickerVC{
         
         self.title = "城市选择"
         
-        /** 处理label */
-        labelPrepare()
-        
-        self.tableView.sectionIndexColor = cityPVCTintColor
-        
-        /** headerView */
-        headerviewPrepare()
-        
-        /** 定位处理 */
-        locationPrepare()
-        
-        //通知处理
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "notiAction:", name: CityChoosedNoti, object: nil)
-        
-        println(self.selectedCityArray)
+        let tableView = UITableView(frame: CGRectMake(0, 0, 10, 10), style: UITableViewStyle.Plain)
+        self.view.addSubview(tableView)
+        tableView.dataSource = self
+        tableView.delegate = self
+        //禁用AR
+//        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+//        
+//        
+//        //vfl
+//        let viewDict = ["tableView": tableView]
+//        let vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: viewDict)
+//        let vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: viewDict)
+//        
+//        self.view.addConstraints(vfl_arr_H)
+//        self.view.addConstraints(vfl_arr_V)
+
+        self.tableView = tableView
     }
     
     
@@ -73,6 +82,7 @@ extension CFCityPickerVC{
         if self.currentCity != nil {return}
         
         //定位开始
+
     }
     
     
@@ -81,11 +91,12 @@ extension CFCityPickerVC{
     func headerviewPrepare(){
         
         let headerView = UIView()
-        headerView.frame = CGRectMake(0, 0, headViewWith, 420)
         
         
+        headerView.frame = CGRectMake(0, 0, headViewWith, headerViewH)
         
         let itemView = HeaderItemView.getHeaderItemView("当前城市")
+        currentCityItemView = itemView
         var currentCities: [CityModel] = []
         if self.currentCityModel != nil {currentCities.append(self.currentCityModel!)}
         itemView.cityModles = currentCities
@@ -93,6 +104,7 @@ extension CFCityPickerVC{
         frame1.origin.y = 20
         itemView.frame = frame1
         headerView.addSubview(itemView)
+        
         
         
         let itemView2 = HeaderItemView.getHeaderItemView("历史选择")
@@ -117,11 +129,16 @@ extension CFCityPickerVC{
         
         
         self.tableView.tableHeaderView = headerView
+        
     }
     
     
-    
-    
+    /**  定位到具体的城市了  */
+    func getedCurrentCityWithName(currentCityName: String){
+        
+        if self.currentCityModel == nil {return}
+        currentCityItemView.cityModles = [self.currentCityModel!]
+    }
     
     
     
@@ -139,11 +156,11 @@ extension CFCityPickerVC{
     }
     
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return sortedCityModles.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         let children = sortedCityModles[section].children
     
@@ -151,13 +168,13 @@ extension CFCityPickerVC{
     }
     
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         return sortedCityModles[section].name
         
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = CFCityCell.cityCellInTableView(tableView)
         
@@ -166,7 +183,7 @@ extension CFCityPickerVC{
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
@@ -174,16 +191,16 @@ extension CFCityPickerVC{
         citySelected(cityModel)
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 
         return 44
     }
     
-    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
         return indexHandle()
     }
     
-    override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
 
         showIndexTitle(title)
         
@@ -240,7 +257,7 @@ extension CFCityPickerVC{
         self.dismissBtn.enabled = false
         self.view.userInteractionEnabled = false
         indexTitleLabel.text = indexTitle
-        self.view.window?.addSubview(indexTitleLabel)
+        self.view.addSubview(indexTitleLabel)
 
     }
     
@@ -253,9 +270,15 @@ extension CFCityPickerVC{
     
     /** 选中城市处理 */
     func citySelected(cityModel: CityModel){
+
+        if let cityIndex = find(self.selectedCityArray, cityModel.name) {
+            self.selectedCityArray.removeAtIndex(cityIndex)
+            
+        }else{
+            if self.selectedCityArray.count >= 8 {self.selectedCityArray.removeLast()}
+        }
         
-//        self.selectedCityArray.insert(cityModel.name, atIndex: 0)
-        self.selectedCityArray.append(cityModel.name)
+        self.selectedCityArray.insert(cityModel.name, atIndex: 0)
         
         NSUserDefaults.standardUserDefaults().setObject(self.selectedCityArray, forKey: SelectedCityKey)
         selectedCityModel?(cityModel: cityModel)

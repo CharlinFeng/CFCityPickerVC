@@ -20,19 +20,16 @@ class ViewController: UIViewController {
         
         //目前有如下问题
         
-        //1.顺序不对
-        //2.历史重复添加、数量超过8个
         //3.还没做定位
-        //4.headerView的高度是写死的
         
         
         
         
-        
-        let cityVC = CFCityPickerVC.getInstance()
+        let cityVC = CFCityPickerVC()
         
 //        //设置当前城市
 //        cityVC.currentCity = "成都"
+        
 
         
         //设置热门城市
@@ -56,7 +53,14 @@ class ViewController: UIViewController {
         
         }
         
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
+            Int64(2 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+                
+                cityVC.currentCity = "北京"
+        }
+        
     }
+ 
 
 }
 

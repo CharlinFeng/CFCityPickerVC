@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		89623F0B1B6CC16800F3D130 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89623F0A1B6CC16800F3D130 /* CoreLocation.framework */; };
 		89D7D6A81B69AB16005C2273 /* CityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D7D6A71B69AB16005C2273 /* CityModel.swift */; };
 		89D7D6AB1B69B728005C2273 /* CFCityPickerVC+Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D7D6AA1B69B728005C2273 /* CFCityPickerVC+Main.swift */; };
 		89D7D6AD1B69B748005C2273 /* CFCityPickerVC+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D7D6AC1B69B748005C2273 /* CFCityPickerVC+TableView.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		89623F0A1B6CC16800F3D130 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		89D7D6A71B69AB16005C2273 /* CityModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityModel.swift; sourceTree = "<group>"; };
 		89D7D6AA1B69B728005C2273 /* CFCityPickerVC+Main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CFCityPickerVC+Main.swift"; sourceTree = "<group>"; };
 		89D7D6AC1B69B748005C2273 /* CFCityPickerVC+TableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CFCityPickerVC+TableView.swift"; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89623F0B1B6CC16800F3D130 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +160,7 @@
 		89F162411B68D4B8005556C3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				89623F0A1B6CC16800F3D130 /* CoreLocation.framework */,
 				89FC52F21B68D926009E7A0D /* City.plist */,
 				89F162421B68D4B8005556C3 /* Info.plist */,
 			);

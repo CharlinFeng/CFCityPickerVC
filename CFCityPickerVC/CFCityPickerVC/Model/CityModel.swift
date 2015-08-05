@@ -40,14 +40,12 @@ extension CFCityPickerVC {
             
             var destinationModels: [CityModel]? = []
             
-            for cityModel in cityModels{
+            for name in cityNames!{
                     
-                if cityModel.children == nil {continue}
-                    
-                    
-                for name in cityNames!{
+                for cityModel in cityModels{
+                        
+                    if cityModel.children == nil {continue}
                 
-                    println(name)
                     for cityModel2 in cityModel.children! {
                         
                         if cityModel2.name != name {continue}
@@ -59,12 +57,8 @@ extension CFCityPickerVC {
                 
             }
             
-            
             return destinationModels
         }
-        
-        
-
     }
     
     

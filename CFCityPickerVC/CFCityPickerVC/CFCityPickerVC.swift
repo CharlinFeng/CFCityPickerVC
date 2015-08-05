@@ -8,14 +8,14 @@
 
 import UIKit
 
-class CFCityPickerVC: UITableViewController {
+class CFCityPickerVC: UIViewController {
 
     var cityModels: [CityModel]!
     
     let cityPVCTintColor = UIColor.grayColor()
     
     /** 可设置：当前城市 */
-    var currentCity: String!
+    var currentCity: String!{didSet{getedCurrentCityWithName(currentCity)}}
     
     /** 可设置：热门城市 */
     var hotCities: [String]!
@@ -32,13 +32,13 @@ class CFCityPickerVC: UITableViewController {
     lazy var dismissBtn: UIButton = { UIButton(frame: CGRectMake(0, 0, 24, 24)) }()
     
     lazy var selectedCityArray: [String] = {NSUserDefaults.standardUserDefaults().objectForKey(SelectedCityKey) as? [String] ?? []}()
-
-}
-
-
-extension CFCityPickerVC{
     
-    class func getInstance() -> CFCityPickerVC{
-        return CFCityPickerVC(style: UITableViewStyle.Plain)
+    var currentCityItemView: HeaderItemView!
+
+    deinit{
+        println("控制器安全释放")
     }
+    
+    var tableView: UITableView!
 }
+

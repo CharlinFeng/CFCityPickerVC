@@ -21,6 +21,20 @@ extension CFCityPickerVC {
         
         /** 为tableView准备 */
         tableViewPrepare()
+        
+        /** 处理label */
+        labelPrepare()
+        
+        self.tableView.sectionIndexColor = cityPVCTintColor
+        
+        /** headerView */
+        headerviewPrepare()
+        
+        /** 定位处理 */
+        locationPrepare()
+        
+        //通知处理
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "notiAction:", name: CityChoosedNoti, object: nil)
     }
     
     /** 返回按钮 */
