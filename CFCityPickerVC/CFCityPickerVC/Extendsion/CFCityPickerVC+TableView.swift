@@ -11,18 +11,21 @@ import UIKit
 
 extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     
-    private var currentCityModel: CityModel? {if self.currentCity==nil{return nil};return CityModel.findCityModelWithCityName([self.currentCity], cityModels: self.cityModels)?.first}
-    private var hotCityModels: [CityModel]? {if self.hotCities==nil{return nil};return CityModel.findCityModelWithCityName(self.hotCities, cityModels: self.cityModels)}
-    private var historyModels: [CityModel]? {if self.selectedCityArray.count == 0 {return nil};return CityModel.findCityModelWithCityName(self.selectedCityArray, cityModels: self.cityModels)}
+    var searchH: CGFloat{return 60}
+    
+    private var currentCityModel: CityModel? {if self.currentCity==nil{return nil};return CityModel.findCityModelWithCityName([self.currentCity], cityModels: self.cityModels, isFuzzy: false)?.first}
+    private var hotCityModels: [CityModel]? {if self.hotCities==nil{return nil};return CityModel.findCityModelWithCityName(self.hotCities, cityModels: self.cityModels, isFuzzy: false)}
+    private var historyModels: [CityModel]? {if self.selectedCityArray.count == 0 {return nil};return CityModel.findCityModelWithCityName(self.selectedCityArray, cityModels: self.cityModels, isFuzzy: false)}
     
     private var headViewWith: CGFloat{return UIScreen.mainScreen().bounds.width - 10}
     
     private var headerViewH: CGFloat{
         
-        var h1: CGFloat = 90
+        var h0: CGFloat = searchH
+        var h1: CGFloat = 100
         var h2: CGFloat = 100; if self.historyModels?.count > 4{h2+=40}
         var h3: CGFloat = 100; if self.hotCities?.count > 4 {h3+=40}
-        return h1+h2+h3
+        return h0+h1+h2+h3
     }
     
     private var sortedCityModles: [CityModel] {
@@ -35,6 +38,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     
     /** 计算高度 */
     private func headItemViewH(count: Int) -> CGRect{
+
         var height: CGFloat = count < 4 ? 90 : 140
         return CGRectMake(0, 0, headViewWith, height)
     }
@@ -45,23 +49,21 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         
         self.title = "城市选择"
         
-        let tableView = UITableView(frame: CGRectMake(0, 0, 10, 10), style: UITableViewStyle.Plain)
+        self.tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
+        self.tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        
         self.view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
-        //禁用AR
-//        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
-//        
-//        
-//        //vfl
-//        let viewDict = ["tableView": tableView]
-//        let vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: viewDict)
-//        let vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: viewDict)
-//        
-//        self.view.addConstraints(vfl_arr_H)
-//        self.view.addConstraints(vfl_arr_V)
 
-        self.tableView = tableView
+        //vfl
+        let viewDict = ["tableView": tableView]
+        let vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: viewDict)
+        let vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: viewDict)
+        
+        self.view.addConstraints(vfl_arr_H)
+        self.view.addConstraints(vfl_arr_V)
     }
     
     
@@ -82,7 +84,24 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         if self.currentCity != nil {return}
         
         //定位开始
+        let location = LocationManager.sharedInstance
+        
+        location.autoUpdate = true
 
+        location.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
+            
+            location.stopUpdatingLocation()
+            
+            location.reverseGeocodeLocationWithLatLon(latitude: latitude, longitude: longitude, onReverseGeocodingCompletionHandler: { (reverseGecodeInfo, placemark, error) -> Void in
+                
+                if error != nil {return}
+                if placemark == nil {return}
+                let city: NSString = (placemark!.locality! as NSString).stringByReplacingOccurrencesOfString("市", withString: "")
+                self.currentCity = city as String
+                
+            })
+            
+        }
     }
     
     
@@ -91,6 +110,85 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     func headerviewPrepare(){
         
         let headerView = UIView()
+        
+        //搜索框
+        searchBar = CitySearchBar()
+        headerView.addSubview(searchBar)
+
+        //vfl
+        let searchBarViewDict = ["searchBar": searchBar]
+        let searchBar_vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-18-[searchBar]-20-|", options: NSLayoutFormatOptions(0), metrics: nil, views: searchBarViewDict)
+        let searchBar_vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[searchBar(==36)]|", options: NSLayoutFormatOptions(0), metrics: nil, views: searchBarViewDict)
+        headerView.addConstraints(searchBar_vfl_arr_H)
+        headerView.addConstraints(searchBar_vfl_arr_V)
+        
+        searchBar.searchAction = { (searchText: String) -> Void in
+        
+            println(searchText)
+        
+        }
+        
+        searchBar.searchBarShouldBeginEditing = {[unowned self] in
+        
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
+            
+            self.searchRVC.cityModels = nil
+            
+            UIView.animateWithDuration(0.15, animations: {[unowned self] () -> Void in
+                self.searchRVC.view.alpha = 1
+            })
+        }
+        
+        
+        searchBar.searchBarDidEndditing = {[unowned self] in
+            
+            if self.searchRVC.cityModels != nil {return}
+            
+            self.searchBar.setShowsCancelButton(false, animated: true)
+            self.searchBar.text = ""
+        
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
+            
+            UIView.animateWithDuration(0.15, animations: {[unowned self] () -> Void in
+                self.searchRVC.view.alpha = 0
+            })
+        }
+        
+        searchBar.searchTextDidChangedAction = {[unowned self] (text: String) in
+        
+            if count(text) == 0 {self.searchRVC.cityModels = nil;return}
+            
+            let searchCityModols = CityModel.searchCityModelsWithCondition(text, cities: self.cityModels)
+            
+            self.searchRVC.cityModels = searchCityModols
+        }
+        
+        //SeatchResultVC
+        self.searchRVC = CitySearchResultVC(nibName: "CitySearchResultVC", bundle: nil)
+        self.addChildViewController(searchRVC)
+        
+        self.view.addSubview(searchRVC.view)
+        self.view.bringSubviewToFront(searchRVC.view)
+        searchRVC.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        //vfl
+        let maskViewDict = ["maskView": searchRVC.view]
+        let maskView_vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[maskView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: maskViewDict)
+        let maskView_vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-80-[maskView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: maskViewDict)
+        self.view.addConstraints(maskView_vfl_arr_H)
+        self.view.addConstraints(maskView_vfl_arr_V)
+        searchRVC.view.alpha = 0
+        searchRVC.touchBeganAction = {[unowned self] in
+            searchBar.endEditing(true)
+        }
+        
+        searchRVC.tableViewScrollAction = { [unowned self] in
+            searchBar.endEditing(true)
+        }
+        
+        searchRVC.tableViewDidSelectedRowAction = {[unowned self] (cityModel: CityModel) in
+            
+            self.citySelected(cityModel)
+        }
         
         
         headerView.frame = CGRectMake(0, 0, headViewWith, headerViewH)
@@ -101,7 +199,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         if self.currentCityModel != nil {currentCities.append(self.currentCityModel!)}
         itemView.cityModles = currentCities
         var frame1 = headItemViewH(itemView.cityModles.count)
-        frame1.origin.y = 20
+        frame1.origin.y = searchH
         itemView.frame = frame1
         headerView.addSubview(itemView)
         
@@ -128,8 +226,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         headerView.addSubview(itemView3)
         
         
-        self.tableView.tableHeaderView = headerView
-        
+        self.tableView?.tableHeaderView = headerView
     }
     
     
@@ -137,11 +234,9 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     func getedCurrentCityWithName(currentCityName: String){
         
         if self.currentCityModel == nil {return}
+        if currentCityItemView.cityModles.count != 0 {return}
         currentCityItemView.cityModles = [self.currentCityModel!]
     }
-    
-    
-    
 
     
     /** 处理label */
@@ -251,6 +346,9 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         return indexTitleIndexArray[index]
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        searchBar.endEditing(true)
+    }
 
     func showIndexTitle(indexTitle: String){
 
@@ -284,7 +382,6 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         selectedCityModel?(cityModel: cityModel)
         self.dismiss()
     }
-    
 }
 
 
@@ -309,6 +406,10 @@ extension CFCityPickerVC{
         return indexArr
     }
     
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        
+        indexTitleLabel.center = self.view.center
+    }
     
 
 }

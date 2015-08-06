@@ -57,7 +57,7 @@
                 <outlet property="lineViewHC" destination="xJ2-ST-Jce" id="S7M-Jy-8PM"/>
                 <outlet property="msgLabel" destination="tkY-rJ-Y5W" id="wDe-WX-xPp"/>
             </connections>
-            <point key="canvasLocation" x="56.5" y="258.5"/>
+            <point key="canvasLocation" x="-11.5" y="393.5"/>
         </view>
     </objects>
 </document>

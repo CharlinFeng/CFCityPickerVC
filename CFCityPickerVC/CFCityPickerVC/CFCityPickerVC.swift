@@ -12,7 +12,11 @@ class CFCityPickerVC: UIViewController {
 
     var cityModels: [CityModel]!
     
-    let cityPVCTintColor = UIColor.grayColor()
+    static let cityPVCTintColor = UIColor.grayColor()
+    
+    var searchBar: CitySearchBar!
+    
+    var searchRVC: CitySearchResultVC!
     
     /** 可设置：当前城市 */
     var currentCity: String!{didSet{getedCurrentCityWithName(currentCity)}}

@@ -25,7 +25,7 @@ extension CFCityPickerVC {
         /** 处理label */
         labelPrepare()
         
-        self.tableView.sectionIndexColor = cityPVCTintColor
+        self.tableView.sectionIndexColor = CFCityPickerVC.cityPVCTintColor
         
         /** headerView */
         headerviewPrepare()
