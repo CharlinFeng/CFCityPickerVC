@@ -81,6 +81,7 @@ class ViewController: UIViewController {
 
 
 
+/** 这里是无关的解析业务 */
 extension ViewController{
     
     /** 解析字典数据，由于swift中字典转模型工具不完善，这里先手动处理 */
