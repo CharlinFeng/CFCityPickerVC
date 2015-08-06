@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="dm4-TL-Fue">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--成都冯成林原创-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="CFCityPickerVC" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,25 +18,65 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uw9-Sp-xdw">
-                                <rect key="frame" x="285" y="285" width="30" height="30"/>
-                                <state key="normal" title="展示">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="170" y="144" width="260" height="80"/>
+                                <color key="backgroundColor" red="0.92042635302794606" green="0.90048391881741974" blue="0.88753161618583964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="0Ii-Wq-Zzb"/>
+                                    <constraint firstAttribute="width" constant="260" id="vwp-Kb-5CI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <state key="normal" title="展示城市控制器">
+                                    <color key="titleColor" red="0.16078431369999999" green="0.24955001534999999" blue="0.33228884477894738" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.72782175164473684" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="showAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="edM-W4-4Fh"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请支持原创，欢迎Star 找到组织，更多原创框架即将来袭！" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jNd-AH-rvj">
+                                <rect key="frame" x="164" y="519" width="272" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="Uw9-Sp-xdw" secondAttribute="centerY" id="GXH-mt-OSL"/>
+                            <constraint firstAttribute="centerX" secondItem="Uw9-Sp-xdw" secondAttribute="centerX" id="b3m-Xe-ryb"/>
+                            <constraint firstItem="Uw9-Sp-xdw" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="80" id="c7Z-Px-l6A"/>
                             <constraint firstAttribute="centerX" secondItem="Uw9-Sp-xdw" secondAttribute="centerX" id="fKe-Yz-82d"/>
+                            <constraint firstAttribute="centerX" secondItem="jNd-AH-rvj" secondAttribute="centerX" id="rMl-JK-059"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="jNd-AH-rvj" secondAttribute="bottom" constant="40" id="tQy-L3-bMs"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="GXH-mt-OSL"/>
+                                <exclude reference="fKe-Yz-82d"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <navigationItem key="navigationItem" title="成都冯成林原创" id="1F8-xW-B43"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="581" y="347"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="HR9-RU-w1v">
+            <objects>
+                <navigationController id="dm4-TL-Fue" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gWW-zX-Pbi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="aiN-aF-6TE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9qI-KH-afY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-40" y="347"/>
         </scene>
     </scenes>
 </document>
