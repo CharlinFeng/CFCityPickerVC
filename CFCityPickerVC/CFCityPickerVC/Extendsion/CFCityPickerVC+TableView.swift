@@ -240,8 +240,8 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     func getedCurrentCityWithName(currentCityName: String){
         
         if self.currentCityModel == nil {return}
-        if currentCityItemView.cityModles.count != 0 {return}
-        currentCityItemView.cityModles = [self.currentCityModel!]
+        if currentCityItemView?.cityModles.count != 0 {return}
+        currentCityItemView?.cityModles = [self.currentCityModel!]
     }
 
     
