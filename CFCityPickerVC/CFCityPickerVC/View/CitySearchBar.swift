@@ -15,6 +15,7 @@ class CitySearchBar: UISearchBar,UISearchBarDelegate {
     
     var searchAction: ((searchText: String)->Void)?
     var searchTextDidChangedAction: ((searchText: String)->Void)?
+    var searchBarCancelAction: (()->())?
     
     
     required init(coder aDecoder: NSCoder) {
@@ -63,7 +64,7 @@ extension CitySearchBar{
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.endEditing(true)
-        
+        searchBarCancelAction?()
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {

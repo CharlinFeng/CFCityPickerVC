@@ -52,6 +52,13 @@ extension CitySearchResultVC{
         tableViewDidSelectedRowAction?(cityModel: cityModels[indexPath.row])
     }
     
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if self.cityModels == nil {return nil}
+        return "共检索到\(self.cityModels.count)到记录"
+    }
+    
+    
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         touchBeganAction?()
     }

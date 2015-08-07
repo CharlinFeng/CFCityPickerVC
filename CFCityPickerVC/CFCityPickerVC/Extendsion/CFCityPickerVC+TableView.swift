@@ -149,7 +149,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         
             self.navigationController?.setNavigationBarHidden(false, animated: true)
             
-            UIView.animateWithDuration(0.15, animations: {[unowned self] () -> Void in
+            UIView.animateWithDuration(0.14, animations: {[unowned self] () -> Void in
                 self.searchRVC.view.alpha = 0
             })
         }
@@ -161,6 +161,12 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
             let searchCityModols = CityModel.searchCityModelsWithCondition(text, cities: self.cityModels)
             
             self.searchRVC.cityModels = searchCityModols
+        }
+        
+        searchBar.searchBarCancelAction = {[unowned self] in
+        
+            self.searchRVC.cityModels = nil
+            self.searchBar.searchBarDidEndditing?()
         }
         
         //SeatchResultVC
