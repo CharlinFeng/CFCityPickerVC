@@ -60,6 +60,9 @@ CFCityPickerVC
 
 由于是拖拽式，所以swift中的命名空间不能很好的发挥，所以框架有一定的前缀，不过在类的归属上，
 我尽量使用了命名空间的原则。其中最明显的就是CityModel是使用了命名空间。
+>1.搜索框的cancel按钮如果需要中文，请添加中文多语言支持即可
+>2.iOS 8定位，请在info.plist 中添加NSLocationWhenInUseUsageDescription 说明文字
+
 
 <br/><br/>
 ####2.model展示城市控制器
