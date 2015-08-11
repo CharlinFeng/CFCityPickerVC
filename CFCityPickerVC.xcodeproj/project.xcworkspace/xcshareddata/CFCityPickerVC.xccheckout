@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>34ED2E21-29AD-4DDF-8402-FE2474AF3FF1</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>CFCityPickerVC</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>172C39664FEA5B87021E43F97D273CA95821FB50</key>
 		<string>https://github.com/nsdictionary/CFCityPickerVC.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CFCityPickerVC.xcodeproj/project.xcworkspace</string>
+	<string>CFCityPickerVC.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>172C39664FEA5B87021E43F97D273CA95821FB50</key>

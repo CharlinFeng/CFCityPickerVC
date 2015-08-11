@@ -29,8 +29,7 @@ class CitySearchResultVC: UIViewController,UITableViewDataSource,UITableViewDele
 }
 
 extension CitySearchResultVC{
-    
-    
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if cityModels == nil {return 0}
