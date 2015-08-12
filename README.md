@@ -10,6 +10,10 @@
 CFCityPickerVC
 ===============
 城市选取控制器
+Swift 1.2<br/>
+Xcode 6.3
+
+
 
 <br/><br/><br/> 
 框架说明
