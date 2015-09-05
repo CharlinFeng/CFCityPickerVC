@@ -386,6 +386,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         
         NSUserDefaults.standardUserDefaults().setObject(self.selectedCityArray, forKey: SelectedCityKey)
         selectedCityModel?(cityModel: cityModel)
+        delegate?.selectedCityModel(self, cityModel: cityModel)
         self.dismiss()
     }
 }

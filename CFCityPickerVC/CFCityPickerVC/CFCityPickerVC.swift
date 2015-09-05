@@ -8,8 +8,16 @@
 
 import UIKit
 
+protocol CFCityPickerVCDelegate{
+    
+    func selectedCityModel(cityPicker: CFCityPickerVC, cityModel:CFCityPickerVC.CityModel)
+}
+
+
 class CFCityPickerVC: UIViewController {
 
+    var delegate: CFCityPickerVCDelegate!
+    
     var cityModels: [CityModel]!
     
     static let cityPVCTintColor = UIColor.grayColor()
