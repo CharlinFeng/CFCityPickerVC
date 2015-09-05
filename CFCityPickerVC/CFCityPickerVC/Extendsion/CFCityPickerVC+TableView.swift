@@ -39,7 +39,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     /** 计算高度 */
     private func headItemViewH(count: Int) -> CGRect{
 
-        var height: CGFloat = count < 4 ? 90 : 140
+        var height: CGFloat = count <= 4 ? 96 : 140
         return CGRectMake(0, 0, headViewWith, height)
     }
     
