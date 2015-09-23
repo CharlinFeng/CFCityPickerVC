@@ -18,7 +18,7 @@ class CitySearchBar: UISearchBar,UISearchBarDelegate {
     var searchBarCancelAction: (()->())?
     
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         /** 视图准备 */
@@ -40,7 +40,7 @@ class CitySearchBar: UISearchBar,UISearchBarDelegate {
         self.layer.borderWidth = 0.5
         self.layer.cornerRadius = 4
         self.layer.masksToBounds = true
-        self.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.placeholder = "输出城市名、拼音或者首字母查询"
         self.tintColor = CFCityPickerVC.cityPVCTintColor
         
@@ -68,7 +68,7 @@ extension CitySearchBar{
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchAction?(searchText: searchBar.text)
+        searchAction?(searchText: searchBar.text!)
         searchBar.endEditing(true)
     }
     

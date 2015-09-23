@@ -54,7 +54,7 @@ extension CFCPContentView{
         
         var cityModel: CFCityPickerVC.CityModel!
     
-        required init(coder aDecoder: NSCoder) {
+        required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
             
             /** 视图准备 */
@@ -126,7 +126,7 @@ class CFCPContentView: UIView{
         let width: CGFloat = (self.bounds.size.width - (CGFloat(maxRowCount - 1)) * marginForRow) / CGFloat(maxRowCount)
         
         let height: CGFloat = 30
-        for (index,btn) in enumerate(btns) {
+        for (index,btn) in btns.enumerate() {
             
             let row = index % maxRowCount
             

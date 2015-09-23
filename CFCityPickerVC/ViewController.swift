@@ -49,7 +49,7 @@ class ViewController: UIViewController {
         cityVC.selectedCityModel = { (cityModel: CFCityPickerVC.CityModel) in
         
         
-            println("您选中了城市： \(cityModel.name)")
+            print("您选中了城市： \(cityModel.name)")
         
         }
         

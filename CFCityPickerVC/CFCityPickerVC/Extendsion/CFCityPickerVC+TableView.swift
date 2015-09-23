@@ -21,8 +21,8 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     
     private var headerViewH: CGFloat{
         
-        var h0: CGFloat = searchH
-        var h1: CGFloat = 100
+        let h0: CGFloat = searchH
+        let h1: CGFloat = 100
         var h2: CGFloat = 100; if self.historyModels?.count > 4{h2+=40}
         var h3: CGFloat = 100; if self.hotCities?.count > 4 {h3+=40}
         return h0+h1+h2+h3
@@ -30,7 +30,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     
     private var sortedCityModles: [CityModel] {
     
-        return cityModels.sorted({ (m1, m2) -> Bool in
+        return cityModels.sort({ (m1, m2) -> Bool in
             m1.getFirstUpperLetter < m2.getFirstUpperLetter
         })
     }
@@ -39,7 +39,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     /** 计算高度 */
     private func headItemViewH(count: Int) -> CGRect{
 
-        var height: CGFloat = count <= 4 ? 96 : 140
+        let height: CGFloat = count <= 4 ? 96 : 140
         return CGRectMake(0, 0, headViewWith, height)
     }
     
@@ -50,7 +50,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         self.title = "城市选择"
         
         self.tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
-        self.tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.tableView.translatesAutoresizingMaskIntoConstraints = false
         
         
         self.view.addSubview(tableView)
@@ -59,8 +59,8 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
 
         //vfl
         let viewDict = ["tableView": tableView]
-        let vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: viewDict)
-        let vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: viewDict)
+        let vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewDict)
+        let vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[tableView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewDict)
         
         self.view.addConstraints(vfl_arr_H)
         self.view.addConstraints(vfl_arr_V)
@@ -117,14 +117,14 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
 
         //vfl
         let searchBarViewDict = ["searchBar": searchBar]
-        let searchBar_vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-18-[searchBar]-20-|", options: NSLayoutFormatOptions(0), metrics: nil, views: searchBarViewDict)
-        let searchBar_vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[searchBar(==36)]|", options: NSLayoutFormatOptions(0), metrics: nil, views: searchBarViewDict)
+        let searchBar_vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-18-[searchBar]-20-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: searchBarViewDict)
+        let searchBar_vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[searchBar(==36)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: searchBarViewDict)
         headerView.addConstraints(searchBar_vfl_arr_H)
         headerView.addConstraints(searchBar_vfl_arr_V)
         
         searchBar.searchAction = { (searchText: String) -> Void in
         
-            println(searchText)
+            print(searchText)
         
         }
         
@@ -156,7 +156,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         
         searchBar.searchTextDidChangedAction = {[unowned self] (text: String) in
         
-            if count(text) == 0 {self.searchRVC.cityModels = nil;return}
+            if text.characters.count == 0 {self.searchRVC.cityModels = nil;return}
             
             let searchCityModols = CityModel.searchCityModelsWithCondition(text, cities: self.cityModels)
             
@@ -175,11 +175,11 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         
         self.view.addSubview(searchRVC.view)
         self.view.bringSubviewToFront(searchRVC.view)
-        searchRVC.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        searchRVC.view.translatesAutoresizingMaskIntoConstraints = false
         //vfl
         let maskViewDict = ["maskView": searchRVC.view]
-        let maskView_vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[maskView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: maskViewDict)
-        let maskView_vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-80-[maskView]-0-|", options: NSLayoutFormatOptions(0), metrics: nil, views: maskViewDict)
+        let maskView_vfl_arr_H = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[maskView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: maskViewDict)
+        let maskView_vfl_arr_V = NSLayoutConstraint.constraintsWithVisualFormat("V:|-80-[maskView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: maskViewDict)
         self.view.addConstraints(maskView_vfl_arr_H)
         self.view.addConstraints(maskView_vfl_arr_V)
         searchRVC.view.alpha = 0
@@ -297,7 +297,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
         return 44
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]! {
         return indexHandle()
     }
     
@@ -375,7 +375,7 @@ extension CFCityPickerVC: UITableViewDataSource,UITableViewDelegate{
     /** 选中城市处理 */
     func citySelected(cityModel: CityModel){
 
-        if let cityIndex = find(self.selectedCityArray, cityModel.name) {
+        if let cityIndex = self.selectedCityArray.indexOf(cityModel.name) {
             self.selectedCityArray.removeAtIndex(cityIndex)
             
         }else{
@@ -400,10 +400,10 @@ extension CFCityPickerVC{
         
         var indexArr: [String] = []
         
-        for (index,cityModel) in enumerate(sortedCityModles) {
+        for (index,cityModel) in sortedCityModles.enumerate() {
             let indexString = cityModel.getFirstUpperLetter
             
-            if contains(indexArr, indexString) {continue}
+            if indexArr.contains(indexString) {continue}
             
             indexArr.append(indexString)
             

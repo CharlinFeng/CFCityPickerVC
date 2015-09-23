@@ -48,7 +48,7 @@ class CFCityPickerVC: UIViewController {
     var currentCityItemView: HeaderItemView!
 
     deinit{
-        println("控制器安全释放")
+        print("控制器安全释放")
     }
     
     var tableView: UITableView!

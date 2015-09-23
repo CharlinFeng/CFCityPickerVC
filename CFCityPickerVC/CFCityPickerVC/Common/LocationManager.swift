@@ -40,6 +40,7 @@ enum GeoCodingType{
   case ReverseGeocoding
 }
 
+
 class LocationManager: NSObject,CLLocationManagerDelegate {
   
   /* Private variables */
@@ -55,7 +56,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
   private let verboseMessageDictionary = [CLAuthorizationStatus.NotDetermined:NSLocalizedString("You have not yet made a choice with regards to this application.", comment: ""),
     CLAuthorizationStatus.Restricted:NSLocalizedString("This application is not authorized to use location services. Due to active restrictions on location services, the user cannot change this status, and may not have personally denied authorization.", comment: ""),
     CLAuthorizationStatus.Denied:NSLocalizedString("You have explicitly denied authorization for this application, or location services are disabled in Settings.", comment: ""),
-    CLAuthorizationStatus.AuthorizedAlways:NSLocalizedString("App is Authorized to always use location services.", comment: ""),CLAuthorizationStatus.AuthorizedWhenInUse:NSLocalizedString("You have granted authorization to use your location only when the app is visible to you.", comment: "")]
+    ]
   
   
   var delegate:LocationManagerDelegate? = nil
@@ -160,7 +161,9 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     if NSString(string: UIDevice.currentDevice().systemVersion).doubleValue >= 8 {
       
       //locationManager.requestAlwaysAuthorization() // add in plist NSLocationAlwaysUsageDescription
-      locationManager.requestWhenInUseAuthorization() // add in plist NSLocationWhenInUseUsageDescription
+      if #available(iOS 8.0, *) {
+          locationManager.requestWhenInUseAuthorization()
+      }
     }
     
     startLocationManger()
@@ -192,7 +195,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     isRunning = false
   }
   
-  internal func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+  internal func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
     
     stopLocationManger()
     
@@ -213,7 +216,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     }
   }
   
-  internal func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+  internal func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     
     let arrayOfLocation = locations as NSArray
     let location = arrayOfLocation.lastObject as! CLLocation
@@ -252,10 +255,10 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     }
   }
   
-  internal func locationManager(manager: CLLocationManager!,
+  internal func locationManager(manager: CLLocationManager,
     didChangeAuthorizationStatus status: CLAuthorizationStatus) {
       var hasAuthorised = false
-      var verboseKey = status
+      let verboseKey = status
       switch status {
       case CLAuthorizationStatus.Restricted:
         locationStatus = NSLocalizedString("Restricted Access", comment: "")
@@ -298,7 +301,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
       }
   }
   
-  func reverseGeocodeLocationWithLatLon(#latitude:Double, longitude: Double,onReverseGeocodingCompletionHandler:LMReverseGeocodeCompletionHandler){
+  func reverseGeocodeLocationWithLatLon(latitude latitude:Double, longitude: Double,onReverseGeocodingCompletionHandler:LMReverseGeocodeCompletionHandler){
     
     let location:CLLocation = CLLocation(latitude:latitude, longitude: longitude)
     
@@ -319,11 +322,11 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     geocoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error)->Void in
       
       if error != nil {
-        self.reverseGeocodingCompletionHandler!(reverseGecodeInfo:nil,placemark:nil, error: error.localizedDescription)
+        self.reverseGeocodingCompletionHandler!(reverseGecodeInfo:nil,placemark:nil, error: error!.localizedDescription)
       } else {
         
-        if let placemark = placemarks?[0] as? CLPlacemark {
-          var address = AddressParser()
+        if let placemark = placemarks?[0]{
+          let address = AddressParser()
           address.parseAppleLocationData(placemark)
           let addressDict = address.getAddressDictionary()
           self.reverseGeocodingCompletionHandler!(reverseGecodeInfo: addressDict,placemark:placemark,error: nil)
@@ -335,7 +338,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     })
   }
   
-  func geocodeAddressString(#address:NSString, onGeocodingCompletionHandler:LMGeocodeCompletionHandler){
+  func geocodeAddressString(address address:NSString, onGeocodingCompletionHandler:LMGeocodeCompletionHandler){
     
     self.geocodingCompletionHandler = onGeocodingCompletionHandler
     
@@ -345,14 +348,15 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
   private func geoCodeAddress(address:NSString){
     
     let geocoder = CLGeocoder()
-    geocoder.geocodeAddressString(address as String, completionHandler: {(placemarks: [AnyObject]!, error: NSError!) -> Void in
+
+    geocoder.geocodeAddressString(address as String, completionHandler: {(placemarks, error) -> Void in
       
       if error != nil {
         
-        self.geocodingCompletionHandler!(gecodeInfo:nil,placemark:nil,error: error.localizedDescription)
+        self.geocodingCompletionHandler!(gecodeInfo:nil,placemark:nil,error: error!.localizedDescription)
       } else {
-        if let placemark = placemarks?[0] as? CLPlacemark {
-          var address = AddressParser()
+        if let placemark = placemarks?[0]{
+          let address = AddressParser()
           address.parseAppleLocationData(placemark)
           let addressDict = address.getAddressDictionary()
           self.geocodingCompletionHandler!(gecodeInfo: addressDict,placemark:placemark,error: nil)
@@ -363,7 +367,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     })
   }
   
-  func geocodeUsingGoogleAddressString(#address:NSString, onGeocodingCompletionHandler:LMGeocodeCompletionHandler){
+  func geocodeUsingGoogleAddressString(address address:NSString, onGeocodingCompletionHandler:LMGeocodeCompletionHandler){
     
     self.geocodingCompletionHandler = onGeocodingCompletionHandler
     
@@ -379,7 +383,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     performOperationForURL(urlString, type: GeoCodingType.Geocoding)
   }
   
-  func reverseGeocodeLocationUsingGoogleWithLatLon(#latitude:Double, longitude: Double,onReverseGeocodingCompletionHandler:LMReverseGeocodeCompletionHandler){
+  func reverseGeocodeLocationUsingGoogleWithLatLon(latitude latitude:Double, longitude: Double,onReverseGeocodingCompletionHandler:LMReverseGeocodeCompletionHandler){
     
     self.reverseGeocodingCompletionHandler = onReverseGeocodingCompletionHandler
     
@@ -391,7 +395,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     reverseGeocodeLocationUsingGoogleWithLatLon(latitude: coord.coordinate.latitude, longitude: coord.coordinate.longitude, onReverseGeocodingCompletionHandler: onReverseGeocodingCompletionHandler)
   }
   
-  private func reverseGocodeUsingGoogle(#latitude:Double, longitude: Double){
+  private func reverseGocodeUsingGoogle(latitude latitude:Double, longitude: Double){
     
     var urlString = "http://maps.googleapis.com/maps/api/geocode/json?latlng=\(latitude),\(longitude)" as NSString
     
@@ -412,7 +416,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
       
       if error != nil {
         
-        self.setCompletionHandler(responseInfo:nil, placemark:nil, error:error.localizedDescription, type:type)
+        self.setCompletionHandler(responseInfo:nil, placemark:nil, error:error!.localizedDescription, type:type)
       } else {
         
         let kStatus = "status"
@@ -422,10 +426,8 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
         let kRequestDenied = "REQUEST_DENIED"
         let kInvalidRequest = "INVALID_REQUEST"
         let kInvalidInput =  "Invalid Input"
-        
-        let dataAsString: NSString? = NSString(data: data, encoding: NSUTF8StringEncoding)
-        
-        let jsonResult: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
+
+        let jsonResult: NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
         
         var status = jsonResult.valueForKey(kStatus) as! NSString
         status = status.lowercaseString
@@ -453,7 +455,7 @@ class LocationManager: NSObject,CLLocationManagerDelegate {
     })
   }
   
-  private func setCompletionHandler(#responseInfo:NSDictionary?,placemark:CLPlacemark?, error:String?,type:GeoCodingType){
+  private func setCompletionHandler(responseInfo responseInfo:NSDictionary?,placemark:CLPlacemark?, error:String?,type:GeoCodingType){
     
     if type == GeoCodingType.Geocoding {
       self.geocodingCompletionHandler!(gecodeInfo:responseInfo,placemark:placemark,error:error)
@@ -499,7 +501,7 @@ private class AddressParser: NSObject{
   
   private func getAddressDictionary()-> NSDictionary {
     
-    var addressDict = NSMutableDictionary()
+    let addressDict = NSMutableDictionary()
     
     addressDict.setValue(latitude, forKey: "latitude")
     addressDict.setValue(longitude, forKey: "longitude")
@@ -516,17 +518,17 @@ private class AddressParser: NSObject{
   
   private func parseAppleLocationData(placemark:CLPlacemark) {
     
-    var addressLines = placemark.addressDictionary["FormattedAddressLines"] as! NSArray
+    var addressLines = placemark.addressDictionary?["FormattedAddressLines"] as! NSArray
     
     //self.streetNumber = placemark.subThoroughfare ? placemark.subThoroughfare : ""
-    self.streetNumber = placemark.thoroughfare != nil ? placemark.thoroughfare : ""
-    self.locality = placemark.locality != nil ? placemark.locality : ""
-    self.postalCode = placemark.postalCode != nil ? placemark.postalCode : ""
-    self.subLocality = placemark.subLocality != nil ? placemark.subLocality : ""
-    self.administrativeArea = placemark.administrativeArea != nil ? placemark.administrativeArea : ""
-    self.country = placemark.country != nil ?  placemark.country : ""
-    self.longitude = placemark.location.coordinate.longitude.description;
-    self.latitude = placemark.location.coordinate.latitude.description
+    self.streetNumber = (placemark.thoroughfare != nil ? placemark.thoroughfare : "")!
+    self.locality = (placemark.locality != nil ? placemark.locality : "")!
+    self.postalCode = (placemark.postalCode != nil ? placemark.postalCode : "")!
+    self.subLocality = (placemark.subLocality != nil ? placemark.subLocality : "")!
+    self.administrativeArea = placemark.administrativeArea != nil ? (placemark.administrativeArea)! : ""
+    self.country = placemark.country != nil ?  placemark.country! : ""
+    self.longitude = placemark.location!.coordinate.longitude.description;
+    self.latitude = placemark.location!.coordinate.latitude.description
     if addressLines.count>0 {
       self.formattedAddress = addressLines.componentsJoinedByString(", ")
     } else {
@@ -569,8 +571,8 @@ private class AddressParser: NSObject{
     
     let index:NSInteger = inArray.indexOfObjectPassingTest { (obj, idx, stop) -> Bool in
       
-      var objDict:NSDictionary = obj as! NSDictionary
-      var types:NSArray = objDict.objectForKey("types") as! NSArray
+      let objDict:NSDictionary = obj as! NSDictionary
+      let types:NSArray = objDict.objectForKey("types") as! NSArray
       let type = types.firstObject as! NSString
       return type.isEqualToString(component as String)
     }
@@ -583,7 +585,7 @@ private class AddressParser: NSObject{
       return ""
     }
     
-    var type = ((inArray.objectAtIndex(index) as! NSDictionary).valueForKey(ofType as String)!) as! NSString
+    let type = ((inArray.objectAtIndex(index) as! NSDictionary).valueForKey(ofType as String)!) as! NSString
     
     if type.length > 0 {
       
@@ -632,7 +634,7 @@ private class AddressParser: NSObject{
     var lng = self.longitude.doubleValue
     var coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
     
-    var placemark = MKPlacemark(coordinate: coordinate, addressDictionary: addressDict as [NSObject : AnyObject])
+    var placemark = MKPlacemark(coordinate: coordinate, addressDictionary: addressDict as! [String : AnyObject])
     
     return (placemark as CLPlacemark)
   }
