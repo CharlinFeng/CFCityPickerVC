@@ -36,22 +36,22 @@ CFCityPickerVC（关注[信息公告牌](https://github.com/CharlinFeng/Show)）
 功能演示
 ===============
 
-####1.基本展示
+#### 1.基本展示
 ![image](./CFCityPickerVC/1.gif)<br /><br />
 
-####2.索引展示：索引快速定位
+#### 2.索引展示：索引快速定位
 ![image](./CFCityPickerVC/2.gif)<br /><br />
 
-####3.城市选择与回调：closure回调，请注意控制台打印
+#### 3.城市选择与回调：closure回调，请注意控制台打印
 ![image](./CFCityPickerVC/3.gif)<br /><br />
 
-####4.历史选择：请注意历史城市与其排序
+#### 4.历史选择：请注意历史城市与其排序
 ![image](./CFCityPickerVC/4.gif)<br /><br />
 
-####5.自定义检索：自动回调，历史记录同样可用
+#### 5.自定义检索：自动回调，历史记录同样可用
 ![image](./CFCityPickerVC/5.gif)<br /><br />
 
-####6.横屏支持
+#### 6.横屏支持
 ![image](./CFCityPickerVC/6.gif)<br /><br />
 
 
@@ -60,7 +60,7 @@ CFCityPickerVC（关注[信息公告牌](https://github.com/CharlinFeng/Show)）
 使用说明
 ===============
 <br/><br/>
-####1.导入
+#### 1.导入
 直接拖拽CFCityPickerVC文件夹到您项目中即可
 
 由于是拖拽式，所以swift中的命名空间不能很好的发挥，所以框架有一定的前缀，不过在类的归属上，
@@ -70,7 +70,7 @@ CFCityPickerVC（关注[信息公告牌](https://github.com/CharlinFeng/Show)）
 
 
 <br/><br/>
-####2.model展示城市控制器
+#### 2.model展示城市控制器
 由于您的项目的导航栏肯定是定制的，所以我这里是让您自己来传您的NavVC，请不要直接modal框架中的CFCityPickerVC，不然会没有导航栏：
 
       
@@ -86,7 +86,7 @@ CFCityPickerVC（关注[信息公告牌](https://github.com/CharlinFeng/Show)）
 
 
 <br/><br/>
-####3.设置当前城市：直接城市名即可，请不要带有【市】字，如：成都
+#### 3.设置当前城市：直接城市名即可，请不要带有【市】字，如：成都
 
     //设置当前城市
     cityVC.currentCity = "成都"
@@ -94,7 +94,7 @@ CFCityPickerVC（关注[信息公告牌](https://github.com/CharlinFeng/Show)）
   注：当然你这里是可以不用设置的，框架有自动定位机制。如果你手动设置了当前城市，则不会触发自动定位。
   
 <br/><br/>
-####4.设置热门城市
+#### 4.设置热门城市
 
       //设置热门城市
       cityVC.hotCities = ["北京","上海","广州","成都","杭州","重庆"]
@@ -102,7 +102,7 @@ CFCityPickerVC（关注[信息公告牌](https://github.com/CharlinFeng/Show)）
   注：同样注意不要带有【市】字
 
 <br/><br/>
-####5.城市选中事件回调：Closure回调，无代理
+#### 5.城市选中事件回调：Closure回调，无代理
 
       //选中了城市
       cityVC.selectedCityModel = { (cityModel: CFCityPickerVC.CityModel) in
